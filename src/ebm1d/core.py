@@ -82,7 +82,7 @@ class EBM1DBudyko:
 
         A = 243.39 - 4.48 * np.log(cst.P_CO2 / cst.P_CO2_0)
         B = 2.07 - 0.0514 * np.log(cst.P_CO2 / cst.P_CO2_0)
-        outgoing_IR_flux = A + B * (T - 273.15) - cst.IR_C + cst.IR_D * (T - 273.15) * np.array(cst.FRACTION_CLOUD)
+        outgoing_IR_flux = (A + B * (T - 273.15)) - (cst.IR_C + cst.IR_D * (T - 273.15)) * np.array(cst.FRACTION_CLOUD)
     
         return outgoing_IR_flux
 
