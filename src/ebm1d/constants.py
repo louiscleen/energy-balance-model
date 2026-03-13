@@ -70,7 +70,7 @@ S_s4 = [171.0, 181.602, 213.408, 263.34, 305.064, 349.182, 383.04, 406.638, 416.
 
 # --- Outgoing IR flux parameters ---
 #P_CO2 = 430.0                # Current CO2 partial pressure [ppm] # This value is temporary and should be read from a configuration file
-P_CO2 = 100000.0                # Current CO2 partial pressure [ppm] (initial value, can be modified during the simulation)
+P_CO2 = 430.0                # Current CO2 partial pressure [ppm] (initial value, can be modified during the simulation)
 P_CO2_0 = 280.0              # Reference CO2 partial pressure (pre-industrial) [ppm]
 IR_C = 54.13                 # Linearization coefficient for cloud outgoing IR flux [W m^-2]
 IR_D = 0.58                  # Temperature dependence for cloud outgoing IR flux [W m^-2 K^-1]

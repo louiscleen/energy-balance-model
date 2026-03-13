@@ -66,7 +66,7 @@ class EBM1DBudyko:
         #x = np.sin(self.lat_centers_rad)
         #Q = (cst.SOLAR_CONSTANT / 4.0) * (1.0 + 0.241 * (1.5 * x**2 - 0.5))
 
-        Q = np.array(cst.S_s4)*1.3   # Utilisation des valeurs pré-calculées de S * s/4 pour chaque bande de latitude
+        Q = np.array(cst.S_s4)   # Utilisation des valeurs pré-calculées de S * s/4 pour chaque bande de latitude
 
         return Q
 
@@ -82,7 +82,7 @@ class EBM1DBudyko:
 
         A = 243.39 - 4.48 * np.log(cst.P_CO2 / cst.P_CO2_0)
         B = 2.07 - 0.0514 * np.log(cst.P_CO2 / cst.P_CO2_0)
-        outgoing_IR_flux = A + B * (T - 273.15) + cst.IR_C + cst.IR_D * (T - 273.15)
+        outgoing_IR_flux = A + B * (T - 273.15) - cst.IR_C + cst.IR_D * (T - 273.15) * np.array(cst.FRACTION_CLOUD)
     
         return outgoing_IR_flux
 
