@@ -1,7 +1,7 @@
 import numpy as np
-import ebm1d.core as core
+from ebm1d import EBM1DBudyko
 
-ebm = core.EBM1DBudyko(n_latitudes=18)
+ebm = EBM1DBudyko(n_latitudes=18)
 
 def print_latitudes():
     for i, lat in enumerate(ebm.lat_centers_rad):
