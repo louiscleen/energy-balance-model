@@ -114,8 +114,28 @@ class EBM1DBudyko:
 
         return Q
 
-    # def _compute_solar_flux_seasonal(self, day_of_year) -> FloatArray:
-    #     return
+    def _compute_solar_flux_seasonal(self, day) -> FloatArray:
+
+        xhi = 2 * np.pi * day / cst.YEAR_IN_DAYS
+        lon_eq = xhi - 2 * np.pi * cst.SPRING_EQUINOX_DAY / cst.YEAR_IN_DAYS
+        lon_per = xhi - 2 * np.pi * cst.PERIHELION_DAY / cst.YEAR_IN_DAYS
+
+
+        delta = np.arcsin(cst.SIN_EPSILON * np.sin(lon_eq))    
+        
+
+        x = -np.tan(self.lat_centers_rad) * np.tan(delta)
+
+        H0 = np.arccos(np.clip(x, -1, 1))
+
+        dist_factor = 1 + 2*cst.EARTH_ECCENTRICITY * np.cos(lon_per)  # Variation de la distance Terre-Soleil
+
+        term1 = H0 * np.sin(self.lat_centers_rad) * np.sin(delta)
+        term2 = np.cos(self.lat_centers_rad) * np.cos(delta) * np.sin(H0)
+
+        Q = self.S * dist_factor * (term1 + term2) / np.pi
+
+        return Q
     
     def _compute_outgoing_IR_flux(self, T: FloatArray) -> FloatArray:
         """

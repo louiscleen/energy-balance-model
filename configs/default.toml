@@ -18,7 +18,7 @@ n_lat = 18
 [time]
 
 # Time step of the model
-dt = 5.0          # [days]
+dt = 1.0          # [days]
 
 # Total simulation length
 n_years = 500
@@ -74,7 +74,7 @@ T_snow_max = 283.0           # [K]
 S = 1361.0                     # [W m^-2]
 
 # If true, include seasonal cycle in insolation
-seasonal = false
+seasonal = true
 
 # ------------------------------------------------------------
 # Outgoing IR flux parameters
