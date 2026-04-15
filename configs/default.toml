@@ -18,7 +18,7 @@ n_lat = 18
 [time]
 
 # Time step of the model
-dt = 1.0          # [days]
+dt = 1          # [days]
 
 # Total simulation length
 n_years = 500
@@ -30,7 +30,7 @@ n_years = 500
 [heat_capacity]
 
 # Effective heat capacity of the surface layer
-C_value = 2.0e8                       # [J m^-2 K^-1]
+C_value = 5.0e7                       # [J m^-2 K^-1]
 
 
 # ------------------------------------------------------------
@@ -82,7 +82,7 @@ seasonal = true
 [radiation]
 
 # Atmospheric CO2 concentration
-p_CO2 = 280.0                # [ppm]
+p_CO2 = 420.0                # [ppm]
 
 A1 = 243.39                  # [W m^-2]
 A2 = -4.48                   # [W m^-2]

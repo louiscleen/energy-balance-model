@@ -66,6 +66,8 @@ class EBM1DBudyko:
             self._precompute_solar_flux = self._compute_solar_flux_annual_mean()
             self._get_solar_flux = lambda day_of_year: self._precompute_solar_flux
 
+        print (f"Initializing the EBM 1D Budyko model with {self.n_lat} latitude band and seasonal insolation = {self.seasonal}")
+
         
 
     def _compute_fraction_ice(self, T: FloatArray) -> FloatArray:
@@ -108,13 +110,15 @@ class EBM1DBudyko:
         x = np.sin(self.lat_centers_rad)
         inter = (1.0 - 0.241 * (3 * x**2 - 1))
         Q = (self.S / 4.0) * inter
-        print(f"Flux solaire incident moyen annuel par latitude : {np.round(inter, 2)} W m^-2")
+        #print(f"Flux solaire incident moyen annuel par latitude : {np.round(inter, 2)} W m^-2")
 
         #Q = self.input_data.S   # Utilisation des valeurs pré-calculées de S * s/4 pour chaque bande de latitude
 
         return Q
 
-    def _compute_solar_flux_seasonal(self, day) -> FloatArray:
+    def _compute_solar_flux_seasonal(self, t) -> FloatArray:
+
+        day = (t / (24.0 * 3600.0)) % cst.YEAR_IN_DAYS
 
         xhi = 2 * np.pi * day / cst.YEAR_IN_DAYS
         lon_eq = xhi - 2 * np.pi * cst.SPRING_EQUINOX_DAY / cst.YEAR_IN_DAYS
@@ -195,7 +199,7 @@ class EBM1DBudyko:
 
     def integrate(self):
         dt = self.dt_days * 24.0 * 3600.0
-        nsteps = int(self.n_years * 365.0 / self.dt_days)
+        nsteps = int(self.n_years * cst.YEAR_IN_DAYS / self.dt_days)
 
         T = self.input_data.T0.copy()  # Température initiale par latitude (en K)
         history = np.zeros((nsteps + 1, self.n_lat))
@@ -208,7 +212,7 @@ class EBM1DBudyko:
             T = T + dt * dTdt
 
             history[n] = T
-            t_years[n] = n * self.dt_days / 365.0
+            t_years[n] = n * self.dt_days / cst.YEAR_IN_DAYS
 
         return t_years, history
     
