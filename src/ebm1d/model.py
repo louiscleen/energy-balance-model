@@ -75,13 +75,8 @@ class EBM1DBudyko:
 
     def _compute_fraction_snow(self, T: FloatArray) -> FloatArray:
         return np.clip((self.T_snow_max - T) / (self.T_snow_max - self.T_snow_min), 0.0, 1.0)
-
-    def _compute_albedo(self, T: FloatArray) -> FloatArray:
-        """
-        Calculation of albedo as a function of temperature.
-        T : temperature table by latitude (in K)
-        Returns a table of the same format with the albedo (dimensionless).
-        """
+    
+    def _compute_albedo_surf(self, T: FloatArray) -> FloatArray:
         self.f_snow = self._compute_fraction_snow(T)
         self.f_ice = self._compute_fraction_ice(T)
 
@@ -89,18 +84,62 @@ class EBM1DBudyko:
         albedo_continent = self.f_snow * self.alpha_snow + (1 - self.f_snow) * self.alpha_land
         albedo_ocean = self.f_ice * self.alpha_ice + (1 - self.f_ice) * self.alpha_ocean
         albedo_surf = self.input_data.f_land * albedo_continent + (1 - self.input_data.f_land) * albedo_ocean
+        return albedo_surf
 
+    def _compute_clear_sky_albedo(self, T: FloatArray) -> FloatArray:
+        albedo_surf = self._compute_albedo_surf(T)
         # Albedo under clear sky: considering the two first terms of the multiple reflection series between 
         # the surface and the atmosphere (through Rayleigh scattering)
         albedo_clear_sky = self.alpha_atmosphere + (1 - self.alpha_atmosphere)**2 * albedo_surf
+        return albedo_clear_sky
+    
+    def _compute_cloudy_sky_albedo(self, T: FloatArray) -> FloatArray:
         # Albedo under cloudy sky: considering that the top of clouds are higher in the atmosphere, 
         # we assume that the albedo is a sum of a fraction of the atmospheric albedo and the cloud albedo.
         albedo_cloudy_sky = self.alpha_atmosphere / 2.0 + (1 - self.alpha_atmosphere / 2.0) * self.alpha_cloud
+        return albedo_cloudy_sky
+
+    def _compute_albedo(self, T: FloatArray) -> FloatArray:
+        """
+        Calculation of albedo as a function of temperature.
+        T : temperature table by latitude (in K)
+        Returns a table of the same format with the albedo (dimensionless).
+        """
+        # self.f_snow = self._compute_fraction_snow(T)
+        # self.f_ice = self._compute_fraction_ice(T)
+
+        # #
+        # albedo_continent = self.f_snow * self.alpha_snow + (1 - self.f_snow) * self.alpha_land
+        # albedo_ocean = self.f_ice * self.alpha_ice + (1 - self.f_ice) * self.alpha_ocean
+        # albedo_surf = self.input_data.f_land * albedo_continent + (1 - self.input_data.f_land) * albedo_ocean
+
+        # # Albedo under clear sky: considering the two first terms of the multiple reflection series between 
+        # # the surface and the atmosphere (through Rayleigh scattering)
+        # albedo_clear_sky = self.alpha_atmosphere + (1 - self.alpha_atmosphere)**2 * albedo_surf
+        # # Albedo under cloudy sky: considering that the top of clouds are higher in the atmosphere, 
+        # # we assume that the albedo is a sum of a fraction of the atmospheric albedo and the cloud albedo.
+        # albedo_cloudy_sky = self.alpha_atmosphere / 2.0 + (1 - self.alpha_atmosphere / 2.0) * self.alpha_cloud
         
+        albedo_clear_sky = self._compute_clear_sky_albedo(T)
+        albedo_cloudy_sky = self._compute_cloudy_sky_albedo(T)
+
         # Final albedo: weighted average between clear sky and cloudy sky
         albedo = self.input_data.f_cloud * albedo_cloudy_sky + (1 - self.input_data.f_cloud) * albedo_clear_sky
         return albedo
+
+    def get_albedo_surf(self, T: FloatArray) -> FloatArray:
+        return self._compute_albedo_surf(T)
     
+    def get_clear_sky_albedo(self, T: FloatArray) -> FloatArray:
+        return self._compute_clear_sky_albedo(T)
+    
+    def get_cloudy_sky_albedo(self, T: FloatArray) -> FloatArray:
+        return self._compute_cloudy_sky_albedo(T)
+    
+    def get_albedo(self, T: FloatArray) -> FloatArray:
+        return self._compute_albedo(T)
+
+
     def _compute_solar_flux_annual_mean(self) -> FloatArray:
         """
         Calcul du flux solaire incident moyen annuel par latitude.
@@ -115,6 +154,9 @@ class EBM1DBudyko:
         #Q = self.input_data.S   # Utilisation des valeurs pré-calculées de S * s/4 pour chaque bande de latitude
 
         return Q
+    
+    def get_solar_flux_annual_mean(self) -> FloatArray:
+        return self._compute_solar_flux_annual_mean()
 
     def _compute_solar_flux_seasonal(self, t) -> FloatArray:
 
@@ -153,6 +195,9 @@ class EBM1DBudyko:
         outgoing_IR_flux = (A + B * (T - 273.15)) - (self.C + self.D * (T - 273.15)) * self.input_data.f_cloud
     
         return outgoing_IR_flux
+    
+    def get_outgoing_IR_flux(self, T: FloatArray) -> FloatArray:
+        return self._compute_outgoing_IR_flux(T)
 
     def _compute_meridional_heat_transport(self, T: FloatArray) -> FloatArray:
         """
@@ -169,6 +214,9 @@ class EBM1DBudyko:
         # Vérification de la conservation de l'énergie : le transport total doit être nul
         # à faire
         return transport
+
+    def get_meridional_heat_transport(self, T: FloatArray) -> FloatArray:
+        return self._compute_meridional_heat_transport(T)
     
     def compute_temperature_tendency(self, t, T: FloatArray) -> FloatArray: #compute_delta_T
         """
