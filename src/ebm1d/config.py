@@ -84,11 +84,11 @@ class AlbedoConfig:
 
 @dataclass(frozen=True)
 class InsolationConfig:
-    S: float
+    S0: float
     seasonal : bool
 
     def __post_init__(self):
-        if self.S <= 0:
+        if self.S0 <= 0:
             raise ValueError("Solar constant must be positive.")
 
 
