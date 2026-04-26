@@ -30,7 +30,7 @@ n_years = 500
 [heat_capacity]
 
 # Effective heat capacity of the surface layer
-C_value = 7.5e7                       # [J m^-2 K^-1]
+C_value = 7.5e7              # [J m^-2 K^-1]
 
 
 # ------------------------------------------------------------
@@ -39,22 +39,22 @@ C_value = 7.5e7                       # [J m^-2 K^-1]
 [albedo]
 
 # Atmospheric albedo (Rayleigh scattering)
-alpha_atmosphere = 0.06         # [-]
+alpha_atmosphere = 0.06      # [-]
 
 # Albedo of clouds
-alpha_cloud = 0.4081            # [-] adjusted
+alpha_cloud = 0.4081         # [-] adjusted
 
 # Albedo of land surfaces
-alpha_land = 0.15               # [-]
+alpha_land = 0.15            # [-]
 
 # Albedo of ocean surfaces
-alpha_ocean = 0.08              # [-]
+alpha_ocean = 0.08           # [-]
 
 # Albedo of snow surfaces
-alpha_snow = 0.7               # [-]
+alpha_snow = 0.7             # [-]
 
 # Albedo of ice surfaces
-alpha_ice = 0.7                 # [-]
+alpha_ice = 0.7              # [-]
 
 # Temperature thresholds for ice formation and melting
 T_ice_min = 257.0            # [K]
@@ -71,9 +71,9 @@ T_snow_max = 283.0           # [K]
 [insolation]
 
 # Solar constant
-S0 = 1368.0                     # [W m^-2]
+S0 = 1368.0                  # [W m^-2]
 
-# If true, include seasonal cycle in insolation
+# If true, the model takes seasonal cycles into account
 seasonal = true
 
 # ------------------------------------------------------------
@@ -104,23 +104,12 @@ K_meridional = 3.057            # [W m^-2 K^-1] adjusted
 # ------------------------------------------------------------
 # Input configuration
 # ------------------------------------------------------------
-[data]
+[input]
 
 # Dataset used for latitude-dependent input fields
+# The file must be in a folder named “data”
 # The file must use the '\t' separator and contain the following column headers:
 #   - 'f_land'  : Land fraction (range 0.0 to 1.0)
 #   - 'f_cloud' : Cloud cover fraction (range 0.0 to 1.0)
 #   - 'T0'      : Initial temperature [K]
-dataset = "earth_18lat.csv"
-
-
-# ------------------------------------------------------------
-# Output configuration
-# ------------------------------------------------------------
-[output]
-
-# Frequency of output (in model time steps)
-save_every = 10
-
-# Output directory
-output_dir = "output/"
+dataset = "earth_18lat.csv" 
