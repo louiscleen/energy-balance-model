@@ -70,7 +70,7 @@ class EBM1DBudyko:
         else:
             # For the non-seasonal case, we precompute the solar flux once since it does not depend on time, to save computation during integration.
             self._precompute_solar_flux = self._compute_solar_flux_annual_mean()
-            self.get_solar_flux = lambda t: self._precompute_solar_flux
+            self.get_solar_flux = lambda t=None: self._precompute_solar_flux
 
     @property
     def S0(self) -> float:
@@ -133,9 +133,9 @@ class EBM1DBudyko:
         Calculation of the annual mean solar flux using Legendre polynomials
         Returns an array of size n_lat with the flux in W m^-2.
         """
-        # Simplified annual mean insolation: Q = S0/4 * (1 - 0.241 * (3 * sin^2(lat) - 1))
+        # Simplified annual mean insolation: S = S0/4 * (1 - 0.241 * (3 * sin^2(lat) - 1))
         x = np.sin(self.lat_centers_rad)
-        insolation_weight = (1.0 - 0.241 * (3 * x**2 - 1))
+        insolation_weight = (1.0 - 0.241 * (3 * x**2 - 1)) # Sometimes known as "s(x)" in the literature
         S = (self.S0 / 4.0) * insolation_weight
         return S
 
@@ -212,7 +212,7 @@ class EBM1DBudyko:
         T : array of temperatures by latitude (in K)
         Returns the global temperature (in K).
         """
-        return np.dot(T, self.f_area)
+        return T @ self.f_area
 
     def integrate(
         self, 
@@ -293,4 +293,4 @@ class EBM1DBudyko:
     
 
 if __name__ == "__main__":
-    print("This is the EBM1DBudyko model implementation. Please run the 'run_model.py' script to execute the model.")
+    print("This is the EBM1DBudyko model implementation. Please refer to the “exploration.ipynb” notebook to run the model.")
