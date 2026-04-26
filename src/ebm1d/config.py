@@ -7,6 +7,8 @@ from dataclasses import dataclass
 from pathlib import Path
 import tomllib
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
 # --------------------------------------------------
 # Model configuration
 # --------------------------------------------------
@@ -85,7 +87,7 @@ class AlbedoConfig:
 @dataclass(frozen=True)
 class InsolationConfig:
     S0: float
-    seasonal : bool
+    seasonal: bool
 
     def __post_init__(self):
         if self.S0 <= 0:
@@ -129,22 +131,8 @@ class TransportConfig:
 # --------------------------------------------------
 
 @dataclass(frozen=True)
-class DataConfig:
+class InputConfig:
     dataset: Path
-
-
-# --------------------------------------------------
-# Output configuration
-# --------------------------------------------------
-
-@dataclass(frozen=True)
-class OutputConfig:
-    save_every: int
-    output_dir: Path
-
-    def __post_init__(self):
-        if self.save_every < 1:
-            raise ValueError("save_every must be at least 1.")
 
 
 # --------------------------------------------------
@@ -161,8 +149,7 @@ class EBM1DConfig:
     insolation: InsolationConfig
     radiation: RadiationConfig
     transport: TransportConfig
-    data: DataConfig
-    output: OutputConfig
+    input: InputConfig
 
 
 def _require_section(data: dict, section: str) -> dict:
@@ -184,42 +171,39 @@ def load_config(path: str | Path) -> EBM1DConfig:
         raise FileNotFoundError(f"Config file not found: {path}")
     
     with path.open("rb") as f:
-        data = tomllib.load(f)
+        config_values = tomllib.load(f)
 
-    base_dir = path.parents[1]
+    model_section = _require_section(config_values, "model")
+    time_section = _require_section(config_values, "time")
+    heat_capacity_section = _require_section(config_values, "heat_capacity")
+    albedo_section = _require_section(config_values, "albedo")
+    insolation_section = _require_section(config_values, "insolation")
+    radiation_section = _require_section(config_values, "radiation")
+    transport_section = _require_section(config_values, "transport")
+    input_section = _require_section(config_values, "input")
 
-    model_data = _require_section(data, "model")
-    time_data = _require_section(data, "time")
-    heat_capacity_data = _require_section(data, "heat_capacity")
-    albedo_data = _require_section(data, "albedo")
-    insolation_data = _require_section(data, "insolation")
-    radiation_data = _require_section(data, "radiation")
-    transport_data = _require_section(data, "transport")
-    data_data = _require_section(data, "data")
-    output_data = _require_section(data, "output")
+    dataset_path = (PROJECT_ROOT / "data" / input_section["dataset"]).resolve()
+    if not dataset_path.exists():
+        raise FileNotFoundError(f"Input dataset not found: {dataset_path}")
 
     cfg = EBM1DConfig(
 
-        model=ModelConfig(**model_data),
+        model=ModelConfig(**model_section),
 
-        time=TimeConfig(**time_data),
+        time=TimeConfig(**time_section),
 
-        heat_capacity=HeatCapacityConfig(**heat_capacity_data),
+        heat_capacity=HeatCapacityConfig(**heat_capacity_section),
 
-        albedo=AlbedoConfig(**albedo_data),
+        albedo=AlbedoConfig(**albedo_section),
 
-        insolation=InsolationConfig(**insolation_data),
+        insolation=InsolationConfig(**insolation_section),
 
-        radiation=RadiationConfig(**radiation_data),
+        radiation=RadiationConfig(**radiation_section),
 
-        transport=TransportConfig(**transport_data),
+        transport=TransportConfig(**transport_section),
 
-        data=DataConfig(dataset=(base_dir / "data" / data_data["dataset"]).resolve()),
+        input=InputConfig(dataset=dataset_path),
 
-        output=OutputConfig(
-            save_every=output_data["save_every"],
-            output_dir=(base_dir / output_data["output_dir"]).resolve()
-        ),
     )
 
     return cfg

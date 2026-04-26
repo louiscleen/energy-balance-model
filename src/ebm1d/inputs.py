@@ -26,7 +26,6 @@ def load_input_data(dataset_path: Path, n_lat: int) -> InputData:
     missing = required - set(df.columns)
 
     if missing: 
-        print (f"Columns in dataset: {sorted(df.columns)}")
         raise ValueError(
             f"Missing columns in dataset: {sorted(missing)}"
         )
