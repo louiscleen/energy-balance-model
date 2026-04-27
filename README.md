@@ -6,9 +6,8 @@ It is within this framework that the first Energy Balance Models (EBMs) were dev
 essential step in understanding the mechanisms of the climate.
 
 ### Objective
-The purpose of this project is to develop a one-dimensional energy balance model using Budyko’s formulation to describe meridional heat transport. To this end, the Earth will be divided into latitudinal bands (typically 18 bands of 10° each).   
-Additionally, in order to make the model more realistic, the seasonal variation in incident solar radiation will be taken into account.  
-Finally, an analysis of climate sensitivity to the solar constant will be conducted.
+The purpose of this project is to develop a one-dimensional **EBM** using Budyko’s formulation to describe meridional heat transport. To this end, the Earth will be divided into latitudinal bands (typically 18 bands of 10° each).   
+In order to make the model more realistic, the **seasonal variation** in incident solar radiation will be taken into account.  Finally, an analysis of climate sensitivity to the solar constant will be conducted.
 
 ### Main equation
 The model is one-dimensional in latitude, with heat transfer based on Budyko's formulation.  
@@ -90,9 +89,7 @@ To run the model:
 uv run python scripts/run_model.py
 ```
 
-This demonstration script will run the EBM1DBudyko model in its seasonal configuration.
-It integrates the model over a 50-year period using a pre-industrial initial condition
-and saves the temperature history and graphs to the results/run_model folder.
+This demo script will run the EBM1DBudyko model in its seasonal configuration. It will perform a 50-year integration and save the temperature history and graphs to the results/run_model folder.
 
 
 #### Optional: Activate the Environment
@@ -115,8 +112,7 @@ python scripts/run_model.py
 This project also includes Jupyter notebooks (`.ipynb`) for exploration and generating results.  
 In particular, the `exploration.ipynb` notebook provides an overview of the model's features and offers a step-by-step **walkthrough** of how to use it.  
 
-The notebooks can be opened with any compatible environment, such as JupyterLab, Jupyter Notebook, VS Code, or Google Colab.  
-If you want to use Jupyter locally without adding it to the project dependencies, run:
+The notebooks can be opened with any compatible environment, such as JupyterLab, Jupyter Notebook, VS Code, or Google Colab. If you want to use Jupyter locally without adding it to the project dependencies, run:
 
 ```bash
 uv run --with jupyter jupyter notebook
