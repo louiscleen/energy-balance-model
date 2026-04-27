@@ -74,7 +74,7 @@ def main():
     ax.set_xlabel("Latitude (°)")
     ax.set_ylabel("Temperature (°C)")
     ax.set_title("Latitudinal temperature profiles for different kt values - Seasonal EBM")
-    ax.legend()
+    ax.legend(loc='lower center')
     plt.savefig(results_dir / "temperature_profiles_kt.pdf")
     plt.savefig(results_dir / "temperature_profiles_kt.png")
     plt.close(fig)
