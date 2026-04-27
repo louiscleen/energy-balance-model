@@ -7,7 +7,7 @@ essential step in understanding the mechanisms of the climate.
 
 ### Objective
 The purpose of this project is to develop a one-dimensional **EBM** using Budyko’s formulation to describe meridional heat transport. To this end, the Earth will be divided into latitudinal bands (typically 18 bands of 10° each).   
-In order to make the model more realistic, the **seasonal variation** in incident solar radiation will be taken into account.  Finally, an analysis of climate sensitivity to the solar constant will be conducted.
+In order to make the model more realistic, the **seasonal variations** in incident solar radiation will be taken into account.  Finally, an analysis of the climate’s sensitivity to the solar constant will be conducted.
 
 ### Main equation
 The model is one-dimensional in latitude, with heat transfer based on Budyko's formulation.  
