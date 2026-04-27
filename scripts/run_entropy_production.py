@@ -34,11 +34,11 @@ def main():
     config = load_config(PROJECT_ROOT / "configs" / "default.toml")
     inputs = load_input_data(config.input.dataset, config.model.n_lat)
 
-    EBM_seasonal = EBM1DBudyko(config, inputs, seasonal=True)
+    ebm_seasonal = EBM1DBudyko(config, inputs, seasonal=True)
 
 
     kt = np.arange(0, 6.1, 0.1, dtype=float)
-    area = EBM_seasonal.area
+    area = ebm_seasonal.area
     sigma = np.zeros(len(kt))
 
     
@@ -46,15 +46,15 @@ def main():
 
     # Loop over kt values to compute entropy production and plot temperature profiles
     for i, kt_value in enumerate(kt):
-        EBM_seasonal.K_meridional = kt_value
-        t_days, history, info = EBM_seasonal.integrate(
+        ebm_seasonal.K_meridional = kt_value
+        t_days, history, info = ebm_seasonal.integrate(
             stop_at_convergence=True,
             n_years=100,
             dt_days=1.0,
             min_years=10.0
         )
         T_last_year = history[-365:]
-        T_global_last_year = EBM_seasonal.global_temperature(T_last_year)
+        T_global_last_year = ebm_seasonal.global_temperature(T_last_year)
 
         # Compute the entropy production for the last year using the formula: sigma = kt * sum(area * (T_global - T) / T)
         # Since the model is seasonal, we compute the entropy production for each day and then average over the last year
@@ -69,7 +69,7 @@ def main():
 
         # Plot the latitudinal temperature profile for the last year for integer kt values (so as not to overcrowd the plot)
         if (kt_value % 1.0) == 0.0:
-            ax.plot(EBM_seasonal.lat_centers_deg, T_last_year.mean(axis=0) - 273.15, label=fr"$k_t = {kt_value:.1f}$", marker='o')
+            ax.plot(ebm_seasonal.lat_centers_deg, T_last_year.mean(axis=0) - 273.15, label=fr"$k_t = {kt_value:.1f}$", marker='o')
 
     ax.set_xlabel("Latitude (°)")
     ax.set_ylabel("Temperature (°C)")
@@ -77,7 +77,7 @@ def main():
     ax.legend()
     plt.savefig(results_dir / "temperature_profiles_kt.pdf")
     plt.savefig(results_dir / "temperature_profiles_kt.png")
-    plt.close()
+    plt.close(fig)
 
     # Find the maximum entropy production and corresponding kt
     idx_sigma_max = np.argmax(sigma)
@@ -96,7 +96,7 @@ def main():
     ax.set_title(r"Entropy production as a function of $k_t$ - Seasonal EBM")
     plt.savefig(results_dir / "entropy_production_kt.png")
     plt.savefig(results_dir / "entropy_production_kt.pdf")
-    plt.close()
+    plt.close(fig)
 
     print(f"Figures saved in {results_dir} directory.")
 
