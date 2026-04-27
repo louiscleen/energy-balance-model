@@ -24,7 +24,7 @@ For more details on the theoretical model and its implementation, see the [proje
 
 - **Temperature history** at different northern latitudes over the last two years.
 
-<img src="results/exploration/temperature_history_target_latitudes.png" width="700"><br>
+<img src="results/exploration/temperature_history_target_latitudes.png" width="650"><br>
 
 As it can be seen, the system responds with some latency (remember that the summer solstice is on June 21 in the Northern Hemisphere). This is due to the thermal capacity, which can be adjusted in the configuration file. A low value results in a more responsive system, while a higher value simulates a system that mixes a deeper layer of the ocean.  
 
@@ -32,7 +32,7 @@ As it can be seen, the system responds with some latency (remember that the summ
 
 - A very visual way to represent both the dependence on latitude and on time of the **solar flux** is a heatmap.  
 
-<img src="results/exploration/solar_flux_last_year.png" width="700"><br>
+<img src="results/exploration/solar_flux_last_year.png" width="650"><br>
 
 
 The flux is fairly constant near the equator and reaches its maximum at the poles during the summer solstice.
@@ -44,7 +44,7 @@ The flux is fairly constant near the equator and reaches its maximum at the pole
 
 - Investigation of the climate response for different values of the solar constant. In particular, the **latitudinal extent of the ice** as a function of $S_0$ sheds light on the **Snowball Earth** state.
 
-<img src="results/climate_sens_S0/ice_coverage_limits.png" width="700"><br>
+<img src="results/climate_sens_S0/ice_coverage_limits.png" width="650"><br>
 
 For more results, see the `results/` directory
 
