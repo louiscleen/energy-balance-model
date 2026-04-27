@@ -46,6 +46,8 @@ The flux is fairly constant near the equator and reaches its maximum at the pole
 
 <img src="results/climate_sens_S0/ice_coverage_limits.png" width="700"><br>
 
+For more results, see the `results/` directory
+
 ---
 
 ## Running the Project
