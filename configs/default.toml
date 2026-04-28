@@ -26,11 +26,11 @@ n_years = 500
 
 
 # ------------------------------------------------------------
-# Surface heat capacity
+# Heat capacity
 # ------------------------------------------------------------
 [heat_capacity]
 
-# Effective heat capacity of the surface layer
+# Effective heat capacity (atmosphere + surface)
 C_value = 7.5e7              # [J m^-2 K^-1]
 
 

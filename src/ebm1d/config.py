@@ -39,7 +39,7 @@ class TimeConfig:
 
 
 # --------------------------------------------------
-# Surface heat capacity
+# Heat capacity
 # --------------------------------------------------
 
 @dataclass(frozen=True)

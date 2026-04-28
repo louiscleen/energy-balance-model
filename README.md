@@ -25,7 +25,7 @@ For more details on the theoretical model and its implementation, see the [proje
 
 <img src="results/exploration/temperature_history_target_latitudes.png" width="650">  
 
-As it can be seen, the system responds with some latency (remember that the summer solstice is on June 21 in the Northern Hemisphere). This is due to the thermal capacity, which can be adjusted in the configuration file. A low value results in a more responsive system, while a higher value simulates a system that mixes a deeper layer of the ocean.  
+As it can be seen, the system responds with some latency (remember that the summer solstice is on June 21 in the Northern Hemisphere). This is due to the heat capacity, which can be adjusted in the configuration file. A low value results in a more responsive system, while a higher value simulates a system that mixes a deeper layer of the ocean.  
 
 
 - Heatmap illustrating how **solar flux** depends on latitude and time.
