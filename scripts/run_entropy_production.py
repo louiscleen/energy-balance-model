@@ -7,31 +7,24 @@ The maximum entropy production give a theoretical estimate of the optimal kt val
 import numpy as np
 import matplotlib.pyplot as plt
 
-plt.rcParams.update({
-    'figure.figsize': (8, 5),
-    'lines.linewidth': 2,
-    'axes.grid': True,
-    'grid.alpha': 0.3,
-    'figure.constrained_layout.use': True,
-    'savefig.dpi': 300,     
-    'savefig.bbox': 'tight'
-})
-
 from pathlib import Path
 
 from ebm1d import EBM1DBudyko
 from ebm1d import load_config
 from ebm1d import load_input_data
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[1]
+
+plt.style.use(ROOT_DIR / ".mplstyle")
+
 
 def main():    
     print("--- Calculation of entropy production as a function of kt ---")
 
-    results_dir = PROJECT_ROOT / "results" / "entropy_production"
+    results_dir = ROOT_DIR / "results" / "entropy_production"
     results_dir.mkdir(parents=True, exist_ok=True)
 
-    config = load_config(PROJECT_ROOT / "configs" / "default.toml")
+    config = load_config(ROOT_DIR / "configs" / "default.toml")
     inputs = load_input_data(config.input.dataset, config.model.n_lat)
 
     ebm_seasonal = EBM1DBudyko(config, inputs, seasonal=True)
@@ -73,7 +66,7 @@ def main():
 
     ax.set_xlabel("Latitude (°)")
     ax.set_ylabel("Temperature (°C)")
-    ax.set_title("Latitudinal temperature profiles for different kt values - Seasonal EBM")
+    ax.set_title("Latitudinal temperature profiles for different kt values")
     ax.legend(loc='lower center')
     plt.savefig(results_dir / "temperature_profiles_kt.pdf")
     plt.savefig(results_dir / "temperature_profiles_kt.png")
@@ -91,9 +84,9 @@ def main():
     ax.axvline(kt_optimal, color='tab:gray', linestyle='--')
     ax.text(kt_optimal + 0.1, 0.0, f"$k_t = {kt_optimal:.2f}$",
         ha='left', va='bottom')
-    ax.set_xlabel(r"$k_t$ (W/(m²K))")
-    ax.set_ylabel(r"$\sigma$ (W/K)")
-    ax.set_title(r"Entropy production as a function of $k_t$ - Seasonal EBM")
+    ax.set_xlabel(r"Meridional transport coefficient $k_t$ (W m$^{-2}$ K$^{-1}$)")
+    ax.set_ylabel(r"Entropy production $\sigma$ (W K$^{-1}$)")
+    ax.set_title(r"Entropy production as a function of $k_t$")
     plt.savefig(results_dir / "entropy_production_kt.png")
     plt.savefig(results_dir / "entropy_production_kt.pdf")
     plt.close(fig)

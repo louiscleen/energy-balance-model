@@ -9,31 +9,24 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-plt.rcParams.update({
-    'figure.figsize': (8, 5),
-    'lines.linewidth': 2,
-    'axes.grid': True,
-    'grid.alpha': 0.3,
-    'figure.constrained_layout.use': True,
-    'savefig.dpi': 300,     
-    'savefig.bbox': 'tight'
-})
-
 from pathlib import Path
 
 from ebm1d import EBM1DBudyko
 from ebm1d import load_config
 from ebm1d import load_input_data
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[1]
+
+plt.style.use(ROOT_DIR / ".mplstyle")
+
 
 def main():  
     # Create results directory to save the figures
-    results_dir = PROJECT_ROOT / "results" / "run_model"
+    results_dir = ROOT_DIR / "results" / "run_model"
     results_dir.mkdir(parents=True, exist_ok=True)
 
     # Load configuration and input data
-    config = load_config(PROJECT_ROOT / "configs" / "default.toml")
+    config = load_config(ROOT_DIR / "configs" / "default.toml")
     inputs = load_input_data(config.input.dataset, config.model.n_lat)
 
     # Creating an instance of the seasonal EBM

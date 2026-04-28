@@ -1,0 +1,24 @@
+# --- Style Settings ---
+figure.figsize : 8, 5
+axes.linewidth : 1.2
+patch.linewidth: 1.2
+lines.linewidth : 2
+
+font.size : 12
+axes.titlesize : 14
+axes.labelsize : 12
+legend.fontsize : 10
+xtick.labelsize : 10
+ytick.labelsize : 10
+
+xtick.major.width: 1.2
+ytick.major.width: 1.2
+xtick.direction : in
+ytick.direction : in
+xtick.top : True
+ytick.right : True
+axes.grid : True
+grid.alpha : 0.25
+figure.constrained_layout.use : True
+savefig.dpi : 300
+savefig.bbox : tight
